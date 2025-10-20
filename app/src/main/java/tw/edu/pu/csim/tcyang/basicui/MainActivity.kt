@@ -82,6 +82,8 @@ fun Main(modifier: Modifier = Modifier) {
 
     var mper: MediaPlayer? by remember { mutableStateOf(null) }
 
+    // 🔸 新增狀態來控制目前的圖片（預設為鴨子）
+    var isDuck by remember { mutableStateOf(true) }
 
     Column (
         modifier = modifier
@@ -209,6 +211,26 @@ fun Main(modifier: Modifier = Modifier) {
 
         }
 
+        Spacer(modifier = Modifier.size(20.dp))
+
+        // 🐥🐯 🔸 新增的圖形按鈕放在三個功能下面
+        Button(
+            onClick = {
+                isDuck = !isDuck  // 切換圖片
+            },
+            colors = buttonColors(Color(0xFFFFC107))
+        ) {
+            Image(
+                painter = painterResource(
+                    id = if (isDuck) Animals[0] else Animals[7]  // 鴨子 vs 獅子
+                ),
+                contentDescription = if (isDuck) "鴨子" else "獅子",
+                modifier = Modifier.size(100.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.size(10.dp))
+
         DisposableEffect(Unit) { // Unit 作為 key 表示這個 effect 只會執行一次
             onDispose {
                 // 釋放 MediaPlayer 資源，避免記憶體洩漏
@@ -216,6 +238,9 @@ fun Main(modifier: Modifier = Modifier) {
                 mper = null
             }
         }
+
+
+
 
     }
 }
